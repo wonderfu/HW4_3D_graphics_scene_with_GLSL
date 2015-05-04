@@ -33,4 +33,23 @@ void main(void)
     color  = mix(MortarColor, BrickColor, useBrick.x * useBrick.y);
     color *= LightIntensity;
     gl_FragColor = vec4 (color, 1.0);
+
+
+     gl_FragColor = vec4 (color, 1.0, 0.5, 0);
+
+     gl_FragColor = vec4 (color, 1.0, 0.9, 0.9);
+
+     gl_FragColor = vec4 (color, 1.0, 0.8, 0.8);
+
+     gl_FragColor = vec4 (color, 1.0, 0.7, 0);
+
+     gl_FragColor = vec4 (color, 1.0, 0.8, 0.7);
+
+     gl_FragColor = vec4 (color, 1.0, 0.1, 0.1);
+    
+     gl_FragColor = vec4 (color, 0.9, 0.1, 0.1);
+
+
+
+
 }
