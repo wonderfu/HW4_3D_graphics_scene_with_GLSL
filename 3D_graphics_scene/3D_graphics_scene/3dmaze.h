@@ -2,11 +2,11 @@
 #define _3DMAZE_H
 
 #include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
 #include "GL/glew.h"
 #include <GL/glaux.h>
 #include <GL/glut.h>
+#include <stdio.h>
+#include <math.h>
 
 #define PI 3.14159265359
 #define PI_180 0.01745329251

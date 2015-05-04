@@ -44,8 +44,8 @@ static GLuint texName;
 GLfloat turn = 0.0;
 
 /* Shader */
-Shader brick_s("Shader Files/Brick.vert", "Shader Files/Brick.frag");
-Shader inferno_s("Shader Files/Inferno.vert", "Shader Files/Inferno.frag");
+Shader brick_s;
+Shader inferno_s;
 
 int main(int argc, char *argv[])
 {
@@ -60,7 +60,8 @@ int main(int argc, char *argv[])
 	glutIdleFunc(Idle);
 	glutReshapeFunc(Reshape);
 	glutDisplayFunc(Display);
-	
+	glewInit();
+
 	Init();
 	glutMainLoop();
 	return 0;
@@ -110,6 +111,9 @@ void Init(void)
 		}
 		fclose(stream);
 	}
+
+	brick_s.init((char*)"./Shader Files/Brick.vert", (char*)"./Shader Files/Brick.frag");
+	inferno_s.init((char*)"./Shader Files/Inferno.vert", (char*)"./Shader Files/Inferno.frag");
 
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	// light

@@ -1,12 +1,13 @@
 #ifndef _SHADER_H
 #define _SHADER_H
 
+#include <stdlib.h>
 #include "GL/glew.h"
 #include <gl/glaux.h>
 #include <GL/glut.h>
 #include <string.h>
 #include <iostream>
-#include <stdlib.h>
+
 
 using namespace std;
 
@@ -26,9 +27,9 @@ public:
 	void unbind();
 
 private:
-	GLuint v = 0;
-	GLuint f = 0;
-	GLuint p = 0;
+	GLuint v;
+	GLuint f;
+	GLuint p;
 };
 
 
