@@ -1,4 +1,5 @@
 #include "3dmaze.h"
+#include "shader.h"
 
 /* Window */
 int window_size[2] = { 800, 800 }; // W H

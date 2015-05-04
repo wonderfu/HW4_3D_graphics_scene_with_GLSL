@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include "GL/glew.h"
+#include <GL/glaux.h>
 #include <GL/glut.h>
 
 #define PI 3.14159265359
