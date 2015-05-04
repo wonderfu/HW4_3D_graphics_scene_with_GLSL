@@ -35,29 +35,33 @@ void main(void)
     gl_FragColor = vec4 (color, 1.0);
 
 
-    if((position.x + position.y)%17<=2)
-     gl_FragColor = vec4 (color, 1.0, 0.5, 0);
-    
-    else if((position.x + position.y)%13<=2)
-     gl_FragColor = vec4 (color, 0.9, 0.1, 0.1);
-
-    else if((position.x + position.y)%9<=2)
-     gl_FragColor = vec4 (color, 1.0, 0.8, 0.7);
- 
-    else if((position.x + position.y)%8<=5)
-     gl_FragColor = vec4 (color, 1.0, 0.1, 0.1);
-
-    else if((position.x + position.y)%3<=2)
-     gl_FragColor = vec4 (color, 1.0, 0.9, 0.9);
-        
-    else if((position.x + position.y)%7<=5)
-     gl_FragColor = vec4 (color, 1.0, 0.7, 0);
-    
-    else if((position.x + position.y)%5<=3)
-     gl_FragColor = vec4 (color, 1.0, 0.8, 0.8);
-
-
-
-
+    if( fmod((position.x + position.y), 17) <= 2 )
+	{
+	    gl_FragColor = vec4 (1.0, 0.5, 0, 1.0);
+	}
+    else if( fmod((position.x + position.y), 13) <= 2 )
+	{
+	    gl_FragColor = vec4 (0.9, 0.1, 0.1, 1.0);
+	} 
+    else if( fmod((position.x + position.y), 9) <= 2 )
+	{
+	    gl_FragColor = vec4 (1.0, 0.8, 0.7, 1.0);
+	}
+    else if( fmod((position.x + position.y), 8) <= 5 )
+	{
+	    gl_FragColor = vec4 (1.0, 0.1, 0.1, 1.0);	
+	}
+    else if( fmod((position.x + position.y), 3) <= 2 )
+	{
+		gl_FragColor = vec4 (1.0, 0.9, 0.9, 1.0);
+	}
+    else if( fmod((position.x + position.y), 7) <= 5 )
+	{
+		gl_FragColor = vec4 (1.0, 0.7, 0, 1.0);	
+	}
+    else if( fmod((position.x + position.y), 5) <= 3 )
+	{
+		gl_FragColor = vec4 (1.0, 0.8, 0.8, 1.0);
+	}
 
 }

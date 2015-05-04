@@ -24,7 +24,6 @@
 #define Map_Start 2
 #define Map_End 3
 
-
 /* Struct */
 typedef struct Wall {
 	bool way[4]; // N E S W

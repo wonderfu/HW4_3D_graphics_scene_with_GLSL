@@ -91,8 +91,6 @@
     <None Include="Shader Files\Brick.vert" />
     <None Include="Shader Files\Inferno.frag" />
     <None Include="Shader Files\Inferno.vert" />
-    <None Include="Shader Files\Polkadot3D.frag" />
-    <None Include="Shader Files\Polkadot3D.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

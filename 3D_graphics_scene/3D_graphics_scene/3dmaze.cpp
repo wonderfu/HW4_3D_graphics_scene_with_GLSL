@@ -44,8 +44,8 @@ static GLuint texName;
 GLfloat turn = 0.0;
 
 /* Shader */
-Shader brick_s;
-Shader inferno_s;
+Shader brick_shader;
+Shader inferno_shader;
 
 int main(int argc, char *argv[])
 {
@@ -112,9 +112,6 @@ void Init(void)
 		fclose(stream);
 	}
 
-	brick_s.init((char*)"./Shader Files/Brick.vert", (char*)"./Shader Files/Brick.frag");
-	inferno_s.init((char*)"./Shader Files/Inferno.vert", (char*)"./Shader Files/Inferno.frag");
-
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	// light
 	glEnable(GL_LIGHTING);
@@ -143,6 +140,9 @@ void Init(void)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, mipmapImage32);
+	// shader 
+	brick_shader.init((char*)"./Shader Files/Brick.vert", (char*)"./Shader Files/Brick.frag");
+	inferno_shader.init((char*)"./Shader Files/Inferno.vert", (char*)"./Shader Files/Inferno.frag");
 }
 
 void Display(void)
@@ -381,11 +381,18 @@ void DrawWall(GLfloat x, GLfloat z)
 {
 	GLfloat width = Wall_W / 2;
 
+	brick_shader.bind();
+	glUniform3f(glGetUniformLocation(brick_shader.id(), "LightPosition"), light0_position[0], light0_position[1], light0_position[2]);
+	glUniform3f(glGetUniformLocation(brick_shader.id(), "BrickColor"), 1, 0, 0);
+	glUniform3f(glGetUniformLocation(brick_shader.id(), "MortarColor"), 0.5, 0.5, 0.5);
+	glUniform2f(glGetUniformLocation(brick_shader.id(), "BrickSize"), 12, 24);
+	glUniform2f(glGetUniformLocation(brick_shader.id(), "BrickPct"), 0.2, 0.2);
+
 	glPushMatrix();
 		glTranslatef(x, 0, z);
 
-		glBindTexture(GL_TEXTURE_2D, texName);
-		glEnable(GL_TEXTURE_2D);
+		//glBindTexture(GL_TEXTURE_2D, texName);
+		//glEnable(GL_TEXTURE_2D);
 
 		glColor3f(0.8f, 0.0f, 0.0f);
 		glBegin(GL_QUADS);
@@ -414,6 +421,8 @@ void DrawWall(GLfloat x, GLfloat z)
 			glTexCoord2f(10.0, 10.0); glVertex3f(width, -Wall_H, -width);
 		glEnd();
 	glPopMatrix();
+	brick_shader.unbind();
+
 	return;
 }
 

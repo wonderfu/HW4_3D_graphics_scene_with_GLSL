@@ -34,12 +34,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader Files\Polkadot3D.vert">
-      <Filter>Source Files\Shader Files</Filter>
-    </None>
-    <None Include="Shader Files\Polkadot3D.frag">
-      <Filter>Source Files\Shader Files</Filter>
-    </None>
     <None Include="Shader Files\Inferno.vert">
       <Filter>Source Files\Shader Files</Filter>
     </None>
