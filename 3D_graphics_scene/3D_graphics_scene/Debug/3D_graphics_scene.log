@@ -1,9 +1,9 @@
-﻿Build started 2015/5/4 下午 11:50:07.
-     1>Project "C:\Users\粲富\Documents\GitHub\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\3D_graphics_scene\3D_graphics_scene.vcxproj" on node 2 (Build target(s)).
+﻿已經開始建置於 2015/5/5 上午 12:37:04。
+     1>節點 2 (Build 目標) 上的專案 "C:\Users\dogen\Desktop\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\3D_graphics_scene\3D_graphics_scene.vcxproj"。
      1>Link:
-         3D_graphics_scene.vcxproj -> C:\Users\粲富\Documents\GitHub\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\Debug\3D_graphics_scene.exe
-     1>Done Building Project "C:\Users\粲富\Documents\GitHub\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\3D_graphics_scene\3D_graphics_scene.vcxproj" (Build target(s)).
+         3D_graphics_scene.vcxproj -> C:\Users\dogen\Desktop\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\Debug\3D_graphics_scene.exe
+     1>專案 "C:\Users\dogen\Desktop\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\3D_graphics_scene\3D_graphics_scene.vcxproj" (Build 目標) 建置完成。
 
-Build succeeded.
+建置成功。
 
-Time Elapsed 00:00:00.29
+經過時間 00:00:00.32
