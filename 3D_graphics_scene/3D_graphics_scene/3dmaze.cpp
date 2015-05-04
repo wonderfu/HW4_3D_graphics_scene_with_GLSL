@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "3dmaze.h"
 #include "shader.h"
 
@@ -469,3 +470,41 @@ void Material(void)
 	glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
 	glMaterialf(GL_FRONT, GL_SHININESS, 0.6 * 128.0);
 }
+<<<<<<< HEAD
+=======
+
+
+
+char *textFileRead(char *fn)
+{
+	FILE *fp;
+	char *content = NULL;
+
+	int count = 0;
+
+	if (fn != NULL) {
+		fp = fopen(fn, "rt");
+
+		if (fp != NULL) {
+
+			fseek(fp, 0, SEEK_END);
+			count = ftell(fp);
+			rewind(fp);
+
+			if (count > 0) {
+				content = (char *)malloc(sizeof(char) * (count + 1));
+				count = fread(content, sizeof(char), count, fp);
+				content[count] = '\0';
+			}
+			fclose(fp);
+		}
+	}
+
+	if (content == NULL)
+	{
+		fprintf(stderr, "ERROR: could not load in file %s\n", fn);
+		exit(1);
+	}
+	return content;
+}
+>>>>>>> origin/master

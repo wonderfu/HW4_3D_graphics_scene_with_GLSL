@@ -44,5 +44,6 @@ void DrawWall(GLfloat, GLfloat);
 void DrawCube(GLfloat, GLfloat);
 void DrawTexture(void);
 void Material(void);
+char *textFileRead(char *fn);
 
 #endif
