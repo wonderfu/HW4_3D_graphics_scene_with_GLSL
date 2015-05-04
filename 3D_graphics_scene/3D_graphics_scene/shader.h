@@ -8,7 +8,6 @@
 #include <string.h>
 #include <iostream>
 
-
 using namespace std;
 
 class Shader
@@ -31,7 +30,5 @@ private:
 	GLuint f;
 	GLuint p;
 };
-
-
 
 #endif

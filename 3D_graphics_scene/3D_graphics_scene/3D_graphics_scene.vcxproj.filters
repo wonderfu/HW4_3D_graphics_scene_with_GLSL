@@ -13,6 +13,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Source Files\Shader Files">
+      <UniqueIdentifier>{a8bdbf7c-8ab4-4e2c-a9c0-7daa54e450b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3dmaze.h">
@@ -29,5 +32,25 @@
     <ClCompile Include="shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader Files\Polkadot3D.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="Shader Files\Polkadot3D.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="Shader Files\Inferno.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="Shader Files\Inferno.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="Shader Files\Brick.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="Shader Files\Brick.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
