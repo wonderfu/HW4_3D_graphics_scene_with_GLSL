@@ -1,15 +1,13 @@
 #include "shader.h"
 
-using namespace std;
-
-char* textFileRead(const char *fileName) 
+char* Shader::textFileRead(const char *fileName)
 {
 	char* text = NULL;
 
 	if (fileName != NULL) 
 	{
 		FILE *file; 
-		fopen_s(&file, fileName, "rt");
+		fopen_s(&file, fileName, "r");
 
 		if (file != NULL) 
 		{
@@ -29,30 +27,25 @@ char* textFileRead(const char *fileName)
 	return text;
 }
 
-void validateShader(GLuint shader, const char* file = 0) 
+void Shader::validateShader(GLuint shader, const char* file = NULL)
 {
-	const unsigned int BUFFER_SIZE = 512;
-	char buffer[BUFFER_SIZE];
-	memset(buffer, 0, BUFFER_SIZE);
-	GLsizei length = 0;
+	char buffer[512];
+	GLsizei buffer_len = 0;
 
-	glGetShaderInfoLog(shader, BUFFER_SIZE, &length, buffer);
-	if (length > 0) 
-	{
+	memset(buffer, 0, 512);
+	glGetShaderInfoLog(shader, 512, &buffer_len, buffer);
+	if (buffer_len > 0)
 		cerr << "Shader " << shader << " (" << (file ? file : "") << ") compile error: " << buffer << endl;
-	}
 }
 
-void validateProgram(GLuint program) 
+void Shader::validateProgram(GLuint program)
 {
-	const unsigned int BUFFER_SIZE = 512;
-	char buffer[BUFFER_SIZE];
-	memset(buffer, 0, BUFFER_SIZE);
-	GLsizei length = 0;
+	char buffer[512];
+	GLsizei buffer_len = 0;
 
-	memset(buffer, 0, BUFFER_SIZE);
-	glGetProgramInfoLog(program, BUFFER_SIZE, &length, buffer);
-	if (length > 0)
+	memset(buffer, 0, 512);
+	glGetProgramInfoLog(program, 512, &buffer_len, buffer);
+	if (buffer_len > 0)
 		cerr << "Program " << program << " link error: " << buffer << endl;
 
 	glValidateProgram(program);
@@ -71,8 +64,8 @@ Shader::Shader(const char *vsFile, const char *fsFile)
 
 void Shader::init(const char *vsFile, const char *fsFile) 
 {
-	shader_vp = glCreateShader(GL_VERTEX_SHADER);
-	shader_fp = glCreateShader(GL_FRAGMENT_SHADER);
+	v = glCreateShader(GL_VERTEX_SHADER);
+	f = glCreateShader(GL_FRAGMENT_SHADER);
 
 	const char* vsText = textFileRead(vsFile);
 	const char* fsText = textFileRead(fsFile);
@@ -83,39 +76,39 @@ void Shader::init(const char *vsFile, const char *fsFile)
 		return;
 	}
 
-	glShaderSource(shader_vp, 1, &vsText, 0);
-	glShaderSource(shader_fp, 1, &fsText, 0);
+	glShaderSource(v, 1, &vsText, 0);
+	glShaderSource(f, 1, &fsText, 0);
 
-	glCompileShader(shader_vp);
-	validateShader(shader_vp, vsFile);
-	glCompileShader(shader_fp);
-	validateShader(shader_fp, fsFile);
+	glCompileShader(v);
+	validateShader(v, vsFile);
+	glCompileShader(f);
+	validateShader(f, fsFile);
 
-	shader_id = glCreateProgram();
-	glAttachShader(shader_id, shader_fp);
-	glAttachShader(shader_id, shader_vp);
-	glLinkProgram(shader_id);
-	validateProgram(shader_id);
+	p = glCreateProgram();
+	glAttachShader(p, f);
+	glAttachShader(p, v);
+	glLinkProgram(p);
+	validateProgram(p);
 }
 
 Shader::~Shader() 
 {
-	glDetachShader(shader_id, shader_fp);
-	glDetachShader(shader_id, shader_vp);
-
-	glDeleteShader(shader_fp);
-	glDeleteShader(shader_vp);
-	glDeleteProgram(shader_id);
+	glDetachShader(p, f);
+	glDetachShader(p, v);
+	
+	glDeleteShader(f);
+	glDeleteShader(v);
+	glDeleteProgram(p);
 }
 
 unsigned int Shader::id() 
 {
-	return shader_id;
+	return p;
 }
 
 void Shader::bind() 
 {
-	glUseProgram(shader_id);
+	glUseProgram(p);
 }
 
 void Shader::unbind() 

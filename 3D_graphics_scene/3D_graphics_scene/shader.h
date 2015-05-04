@@ -8,6 +8,8 @@
 #include <iostream>
 #include <stdlib.h>
 
+using namespace std;
+
 class Shader
 {
 public:
@@ -15,17 +17,20 @@ public:
 	Shader(const char*, const char*);
 	~Shader();
 	
+	char* textFileRead(const char*);
+	void validateShader(GLuint, const char*);
+	void validateProgram(GLuint);
 	void init(const char*, const char*);
 	unsigned int id();
 	void bind();
 	void unbind();
 
 private:
-	GLuint shader_vp, shader_fp, shader_id;
+	GLuint v = 0;
+	GLuint f = 0;
+	GLuint p = 0;
 };
 
-char* textFileRead(const char*);
-void validateShader(GLuint, const char*);
-void validateProgram(GLuint);
+
 
 #endif

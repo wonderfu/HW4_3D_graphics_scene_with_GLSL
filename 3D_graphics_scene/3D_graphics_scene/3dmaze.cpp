@@ -44,7 +44,7 @@ static GLuint texName;
 GLfloat turn = 0.0;
 
 /* Shader */
-Shader brick_s("Shader Files/Brick.vert","Shader Files/Brick.frag");
+Shader brick_s("Shader Files/Brick.vert", "Shader Files/Brick.frag");
 Shader inferno_s("Shader Files/Inferno.vert", "Shader Files/Inferno.frag");
 
 int main(int argc, char *argv[])
