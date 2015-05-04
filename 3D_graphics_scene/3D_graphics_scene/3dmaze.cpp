@@ -16,7 +16,7 @@ bool test_light = false;
 GLfloat light0_ambient[] = { 0.3, 0.3, 0.3, 1.0 };
 GLfloat light0_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat light0_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-GLfloat light0_position[] = { 0.0, 200.0, 0.0, 1.0 };
+GLfloat light0_position[] = { 0.0, 150.0, 0.0, 1.0 };
 
 /* Light1 */
 bool flash_light = true;
@@ -384,9 +384,9 @@ void DrawWall(GLfloat x, GLfloat z)
 	brick_shader.bind();
 	glUniform3f(glGetUniformLocation(brick_shader.id(), "LightPosition"), light0_position[0], light0_position[1], light0_position[2]);
 	glUniform3f(glGetUniformLocation(brick_shader.id(), "BrickColor"), 1, 0, 0);
-	glUniform3f(glGetUniformLocation(brick_shader.id(), "MortarColor"), 0.5, 0.5, 0.5);
-	glUniform2f(glGetUniformLocation(brick_shader.id(), "BrickSize"), 12, 24);
-	glUniform2f(glGetUniformLocation(brick_shader.id(), "BrickPct"), 0.2, 0.2);
+	glUniform3f(glGetUniformLocation(brick_shader.id(), "MortarColor"), 0.6, 0.4, 0.2);
+	glUniform2f(glGetUniformLocation(brick_shader.id(), "BrickSize"), 5, 2);
+	glUniform2f(glGetUniformLocation(brick_shader.id(), "BrickPct"), 0.85, 0.85);
 
 	glPushMatrix();
 		glTranslatef(x, 0, z);
