@@ -41,7 +41,7 @@ void Motion(int, int);
 void LightSource(void);
 void DrawWall(GLfloat, GLfloat);
 void DrawCube(GLfloat, GLfloat);
-void DrawTexture(void);
+void DrawBullet(void);
 void Material(void);
 
 #endif

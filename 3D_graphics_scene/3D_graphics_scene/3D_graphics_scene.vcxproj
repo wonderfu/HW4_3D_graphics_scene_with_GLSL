@@ -81,9 +81,11 @@
   <ItemGroup>
     <ClCompile Include="3dmaze.cpp" />
     <ClCompile Include="shader.cpp" />
+    <ClCompile Include="noise.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3dmaze.h" />
+    <ClInclude Include="noise.h" />
     <ClInclude Include="shader.h" />
   </ItemGroup>
   <ItemGroup>

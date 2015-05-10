@@ -1,5 +1,6 @@
 #include "3dmaze.h"
 #include "shader.h"
+#include "noise.h"
 
 /* Window */
 int window_size[2] = { 800, 800 }; // W H
@@ -34,13 +35,15 @@ GLdouble bullet_ray[3] = { 0.0, 0.0, 0.0 };
 GLdouble bullet_pos[3] = { 0.0, 0.0, 0.0 };
 GLdouble gravity = -0.005;
 
+/* Noise */
+static GLuint noisetex;
+double mynoise[NoiseWidth][NoiseHeight][NoiseDepth];
+
 /* Maze */
 bool build_from_file = true;
 int **map;
 int map_w, map_h;
 
-GLubyte mipmapImage32[32][32][4];
-static GLuint texName;
 GLfloat turn = 0.0;
 
 /* Shader */
@@ -69,7 +72,7 @@ int main(int argc, char *argv[])
 
 void Init(void)
 {
-	// map file
+	/* map file */
 	if (build_from_file)
 	{
 		FILE *stream;
@@ -113,7 +116,8 @@ void Init(void)
 	}
 
 	glClearColor(0.0, 0.0, 0.0, 1.0);
-	// light
+	
+	/* light */
 	glEnable(GL_LIGHTING);
 	glEnable(GL_BLEND);
 	glEnable(GL_COLOR_MATERIAL);
@@ -125,22 +129,40 @@ void Init(void)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glClearDepth(1.0);
-	// mouse
+	
+	/* mouse */
 	glutSetCursor(GLUT_CURSOR_NONE);
-	// camera
+	
+	/* camera */
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(60.0, (GLfloat)window_size[0] / (GLfloat)window_size[1], 1.0, 10000.0);
+	
+	// noise
+	generateNoise();
+	for (int i = 0; i < NoiseWidth; ++i)
+	{
+		for (int j = 0; j < NoiseHeight; ++j)
+		{
+			for (int k = 0; k < NoiseDepth; ++k)
+			{
+				mynoise[i][j][k] = turbulence(i, j, k, 32)/128.0;
+				//mynoise[i][j][k] = rand()%100/100.0;
+			}
+		}
+	}
+
 	// texture
-	DrawTexture();
-	glGenTextures(1, &texName);
-	glBindTexture(GL_TEXTURE_2D, texName);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, mipmapImage32);
-	// shader 
+	glGenTextures(1, &noisetex);
+	glBindTexture(GL_TEXTURE_3D, noisetex);
+	glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA, NoiseWidth, NoiseHeight, NoiseDepth, 0, GL_RGBA, GL_UNSIGNED_BYTE, mynoise);
+	
+	/* shader */
 	brick_shader.init((char*)"./Shader Files/Brick.vert", (char*)"./Shader Files/Brick.frag");
 	inferno_shader.init((char*)"./Shader Files/Inferno.vert", (char*)"./Shader Files/Inferno.frag");
 }
@@ -204,11 +226,8 @@ void Display(void)
 		bullet_pos[1] += bullet_ray[1] * 0.5;
 		bullet_pos[2] += bullet_ray[2] * 0.5;
 		bullet_ray[1] += gravity;
-		glPushMatrix();
-			glTranslatef(bullet_pos[0], bullet_pos[1], bullet_pos[2]);
-			glColor3f(0.0, 1.0, 0.0);
-			glutSolidSphere(radious, 20, 20);
-		glPopMatrix();
+
+		DrawBullet();
 		--bullet_dis;
 	}
 	glFlush();
@@ -335,60 +354,19 @@ void LightSource(void)
 	}
 }
 
-void DrawTexture(void)
-{
-	int i, j;
-	int half_line = 2;
-
-	for (i = 0; i < 32; i++) 
-	{
-		for (j = 0; j < 32; j++) 
-		{
-			mipmapImage32[i][j][0] = 128;
-			mipmapImage32[i][j][1] = 128;
-			mipmapImage32[i][j][2] = 128;
-			mipmapImage32[i][j][3] = 255;
-		}
-	}
-
-	for (i = half_line; i < 16 - half_line; ++i)
-	{
-		for (j = half_line; j < 32 - half_line; ++j)
-		{
-			mipmapImage32[i][j][0] = 255;
-			mipmapImage32[i][j][1] = 0;
-			mipmapImage32[i][j][2] = 0;
-		}
-	}
-	for (i = 16 + half_line; i < 32 - half_line; ++i)
-	{
-		for (j = 0; j < 16 - half_line; ++j)
-		{
-			mipmapImage32[i][j][0] = 255;
-			mipmapImage32[i][j][1] = 0;
-			mipmapImage32[i][j][2] = 0;
-		}
-		for (j = 16 + half_line; j < 32; ++j)
-		{
-			mipmapImage32[i][j][0] = 255;
-			mipmapImage32[i][j][1] = 0;
-			mipmapImage32[i][j][2] = 0;
-		}
-	}
-}
-
 void DrawWall(GLfloat x, GLfloat z)
 {
 	GLfloat width = Wall_W / 2;
 
-	brick_shader.bind();
-	glUniform3f(glGetUniformLocation(brick_shader.id(), "LightPosition"), light0_position[0], light0_position[1], light0_position[2]);
-	glUniform3f(glGetUniformLocation(brick_shader.id(), "BrickColor"), 1, 0, 0);
-	glUniform3f(glGetUniformLocation(brick_shader.id(), "MortarColor"), 0.6, 0.4, 0.2);
-	glUniform2f(glGetUniformLocation(brick_shader.id(), "BrickSize"), 5, 2);
-	glUniform2f(glGetUniformLocation(brick_shader.id(), "BrickPct"), 0.85, 0.85);
-
 	glPushMatrix();
+
+		brick_shader.bind();
+		glUniform3f(glGetUniformLocation(brick_shader.id(), "LightPosition"), light0_position[0], light0_position[1], light0_position[2]);
+		glUniform3f(glGetUniformLocation(brick_shader.id(), "BrickColor"), 1, 0, 0);
+		glUniform3f(glGetUniformLocation(brick_shader.id(), "MortarColor"), 0.6, 0.4, 0.2);
+		glUniform2f(glGetUniformLocation(brick_shader.id(), "BrickSize"), 5, 2);
+		glUniform2f(glGetUniformLocation(brick_shader.id(), "BrickPct"), 0.85, 0.85);
+
 		glTranslatef(x, 0, z);
 
 		//glBindTexture(GL_TEXTURE_2D, texName);
@@ -420,8 +398,9 @@ void DrawWall(GLfloat x, GLfloat z)
 			glTexCoord2f(0.0, 10.0); glVertex3f(width, -Wall_H, width);
 			glTexCoord2f(10.0, 10.0); glVertex3f(width, -Wall_H, -width);
 		glEnd();
+		brick_shader.unbind();
+
 	glPopMatrix();
-	brick_shader.unbind();
 
 	return;
 }
@@ -429,7 +408,8 @@ void DrawWall(GLfloat x, GLfloat z)
 void DrawCube(GLfloat x, GLfloat z)
 {
 	glPushMatrix();	
-		glTranslatef(x, 0, z);
+	inferno_shader.bind();
+	glTranslatef(x, 0, z);
 		glRotatef(45, -1.0, 0.0, 0.0);
 		glRotatef(45, 0.0, 0.0, 1.0);
 		glRotatef(turn, 1.0, 1.0, 1.0);
@@ -472,6 +452,31 @@ void DrawCube(GLfloat x, GLfloat z)
 			glVertex3f(0.7, -0.7,  0.7);
 			glVertex3f(0.7, -0.7, -0.7);
 		glEnd();
+		inferno_shader.unbind();
+		glPopMatrix();
+}
+
+void DrawBullet()
+{
+	glPushMatrix();
+
+
+	inferno_shader.bind();
+
+	glUniform1f(glGetUniformLocation(inferno_shader.id(), "Scale"), 0.0);
+	glUniform1f(glGetUniformLocation(inferno_shader.id(), "Offset"), 0.0);
+	glUniform3f(glGetUniformLocation(inferno_shader.id(), "FireColor1"), 1, 0, 0);
+	glUniform3f(glGetUniformLocation(inferno_shader.id(), "FireColor2"), 0, 1, 0);
+	glUniform1f(glGetUniformLocation(inferno_shader.id(), "Extent"), 1.2);
+	glUniform1i(glGetUniformLocation(inferno_shader.id(), "sampler3d"), 0);
+
+	glBindTexture(GL_TEXTURE_3D, noisetex);
+	glEnable(GL_TEXTURE_3D);
+
+	glTranslatef(bullet_pos[0], bullet_pos[1], bullet_pos[2]);
+	glutSolidSphere(radious, 20, 20);
+
+	inferno_shader.unbind();
 	glPopMatrix();
 }
 

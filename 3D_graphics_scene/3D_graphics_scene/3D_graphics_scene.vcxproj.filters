@@ -24,12 +24,18 @@
     <ClInclude Include="shader.h">
       <Filter>Head Files</Filter>
     </ClInclude>
+    <ClInclude Include="noise.h">
+      <Filter>Head Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3dmaze.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="noise.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
