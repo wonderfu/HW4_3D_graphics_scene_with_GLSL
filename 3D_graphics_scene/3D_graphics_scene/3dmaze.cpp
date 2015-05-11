@@ -49,6 +49,8 @@ GLfloat turn = 0.0;
 /* Shader */
 Shader brick_shader;
 Shader inferno_shader;
+Shader test1;
+Shader test2;
 
 int main(int argc, char *argv[])
 {
@@ -146,7 +148,7 @@ void Init(void)
 		{
 			for (int k = 0; k < NoiseDepth; ++k)
 			{
-				mynoise[i][j][k] = turbulence(i, j, k, 32)/128.0;
+				mynoise[i][j][k] = turbulence(i, j, k, 32);
 				//mynoise[i][j][k] = rand()%100/100.0;
 			}
 		}
@@ -165,6 +167,8 @@ void Init(void)
 	/* shader */
 	brick_shader.init((char*)"./Shader Files/Brick.vert", (char*)"./Shader Files/Brick.frag");
 	inferno_shader.init((char*)"./Shader Files/Inferno.vert", (char*)"./Shader Files/Inferno.frag");
+	test1.init((char*)"./Shader Files/test1.vert", (char*)"./Shader Files/test1.frag");
+	//test2.init((char*)"./Shader Files/test2.vert", (char*)"./Shader Files/test2.frag");
 }
 
 void Display(void)
@@ -207,6 +211,7 @@ void Display(void)
 		glEnd();
 	glPopMatrix();
 	// wall
+
 	int map_half_h = map_h / 2, map_half_w = map_w / 2;
 
 	for (int i = 0; i < map_h; ++i)
@@ -222,10 +227,10 @@ void Display(void)
 
 	if (bullet_dis > 0)
 	{
-		bullet_pos[0] += bullet_ray[0] * 0.5;
-		bullet_pos[1] += bullet_ray[1] * 0.5;
-		bullet_pos[2] += bullet_ray[2] * 0.5;
-		bullet_ray[1] += gravity;
+		bullet_pos[0] += bullet_ray[0] * 0.05;
+		bullet_pos[1] += bullet_ray[1] * 0.05;
+		bullet_pos[2] += bullet_ray[2] * 0.05;
+		bullet_ray[1] += gravity*0.1;
 
 		DrawBullet();
 		--bullet_dis;
@@ -310,7 +315,7 @@ void Mouse(int button, int state, int x, int y)
 	bullet_ray[0] = camera_ray[0];
 	bullet_ray[1] = +0.1;
 	bullet_ray[2] = camera_ray[2];
-	bullet_dis = 100;
+	bullet_dis = 1000;
 }
 
 void Motion(int x, int y)
@@ -372,7 +377,7 @@ void DrawWall(GLfloat x, GLfloat z)
 		//glBindTexture(GL_TEXTURE_2D, texName);
 		//glEnable(GL_TEXTURE_2D);
 
-		glColor3f(0.8f, 0.0f, 0.0f);
+		//glColor3f(0.8f, 0.0f, 0.0f);
 		glBegin(GL_QUADS);
 			glNormal3f(0.0f, 0.0f, 1.0f);
 			glTexCoord2f(10.0, 0.0); glVertex3f(width, Wall_H, width);
@@ -408,8 +413,9 @@ void DrawWall(GLfloat x, GLfloat z)
 void DrawCube(GLfloat x, GLfloat z)
 {
 	glPushMatrix();	
-	inferno_shader.bind();
-	glTranslatef(x, 0, z);
+		test1.bind();
+
+		glTranslatef(x, 0, z);
 		glRotatef(45, -1.0, 0.0, 0.0);
 		glRotatef(45, 0.0, 0.0, 1.0);
 		glRotatef(turn, 1.0, 1.0, 1.0);
@@ -452,31 +458,30 @@ void DrawCube(GLfloat x, GLfloat z)
 			glVertex3f(0.7, -0.7,  0.7);
 			glVertex3f(0.7, -0.7, -0.7);
 		glEnd();
-		inferno_shader.unbind();
-		glPopMatrix();
+
+		test1.unbind();
+	glPopMatrix();
 }
 
 void DrawBullet()
 {
 	glPushMatrix();
-
-
-	inferno_shader.bind();
-
-	glUniform1f(glGetUniformLocation(inferno_shader.id(), "Scale"), 0.0);
-	glUniform1f(glGetUniformLocation(inferno_shader.id(), "Offset"), 0.0);
-	glUniform3f(glGetUniformLocation(inferno_shader.id(), "FireColor1"), 1, 0, 0);
-	glUniform3f(glGetUniformLocation(inferno_shader.id(), "FireColor2"), 0, 1, 0);
-	glUniform1f(glGetUniformLocation(inferno_shader.id(), "Extent"), 1.2);
-	glUniform1i(glGetUniformLocation(inferno_shader.id(), "sampler3d"), 0);
-
-	glBindTexture(GL_TEXTURE_3D, noisetex);
-	glEnable(GL_TEXTURE_3D);
-
-	glTranslatef(bullet_pos[0], bullet_pos[1], bullet_pos[2]);
-	glutSolidSphere(radious, 20, 20);
-
-	inferno_shader.unbind();
+		inferno_shader.bind();
+	
+		glUniform1f(glGetUniformLocation(inferno_shader.id(), "Scale"), -1.0);
+		glUniform1f(glGetUniformLocation(inferno_shader.id(), "Offset"), 0.0);
+		glUniform3f(glGetUniformLocation(inferno_shader.id(), "FireColor1"), 0.8, 0.1, 0);
+		glUniform3f(glGetUniformLocation(inferno_shader.id(), "FireColor2"), 0.1, 0.8, 0.0);
+		glUniform1f(glGetUniformLocation(inferno_shader.id(), "Extent"), 10);
+		glUniform1i(glGetUniformLocation(inferno_shader.id(), "sampler3d"), 0);
+	
+		glBindTexture(GL_TEXTURE_3D, noisetex);
+		glEnable(GL_TEXTURE_3D);
+	
+		glTranslatef(bullet_pos[0], bullet_pos[1], bullet_pos[2]);
+		glutSolidSphere(radious, 20, 20);
+	
+		inferno_shader.unbind();
 	glPopMatrix();
 }
 

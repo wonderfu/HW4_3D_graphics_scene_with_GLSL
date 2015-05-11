@@ -52,5 +52,17 @@
     <None Include="Shader Files\Brick.frag">
       <Filter>Source Files\Shader Files</Filter>
     </None>
+    <None Include="Shader Files\test2.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="Shader Files\test2.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="Shader Files\test1.vert">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="Shader Files\test1.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

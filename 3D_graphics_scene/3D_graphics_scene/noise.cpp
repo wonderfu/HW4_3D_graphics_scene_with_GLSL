@@ -4,6 +4,8 @@ double noise[NoiseWidth][NoiseHeight][NoiseDepth];
 
 void generateNoise()
 {
+	srand(time(NULL));
+
 	for (int x = 0; x < NoiseWidth; ++x)
 	{
 		for (int y = 0; y < NoiseHeight; ++y)
