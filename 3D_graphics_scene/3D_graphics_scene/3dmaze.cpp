@@ -51,6 +51,7 @@ Shader brick_shader;
 Shader inferno_shader;
 Shader test1;
 Shader test2;
+float xtime = 0, ytime = 0, ztime = 0;
 
 int main(int argc, char *argv[])
 {
@@ -168,7 +169,7 @@ void Init(void)
 	brick_shader.init((char*)"./Shader Files/Brick.vert", (char*)"./Shader Files/Brick.frag");
 	inferno_shader.init((char*)"./Shader Files/Inferno.vert", (char*)"./Shader Files/Inferno.frag");
 	test1.init((char*)"./Shader Files/test1.vert", (char*)"./Shader Files/test1.frag");
-	//test2.init((char*)"./Shader Files/test2.vert", (char*)"./Shader Files/test2.frag");
+	test2.init((char*)"./Shader Files/test2.vert", (char*)"./Shader Files/test2.frag");
 }
 
 void Display(void)
@@ -222,6 +223,51 @@ void Display(void)
 				DrawWall((map_half_h - i)*Wall_W, (map_half_w - j)*Wall_W);
 			if (map[i][j] == Map_End)
 				DrawCube((map_half_h - i)*Wall_W, (map_half_w - j)*Wall_W);
+			if (map[i][j] == Map_Start)
+			{
+				glPushMatrix();
+					
+					test2.bind();
+					glUniform1f(glGetUniformLocation(test2.id(), "xtime"), xtime);
+					glUniform1f(glGetUniformLocation(test2.id(), "ytime"), ytime);
+					glUniform1f(glGetUniformLocation(test2.id(), "ztime"), ztime);
+					glUniform1f(glGetUniformLocation(test2.id(), "size"), Wall_H);
+
+					glTranslatef((map_half_h - i)*Wall_W, 0, (map_half_w - j)*Wall_W);
+
+					glColor3f(0.0f, 0.0f, 1.0f);
+					glBegin(GL_QUADS);
+						glNormal3f(0.0f, 0.0f, 1.0f);
+						glVertex3f(Wall_W / 2, Wall_H, Wall_W / 2);
+						glVertex3f(-Wall_W / 2, Wall_H, Wall_W / 2);
+						glVertex3f(-Wall_W / 2, -Wall_H, Wall_W / 2);
+						glVertex3f(Wall_W / 2, -Wall_H, Wall_W / 2);
+
+						glNormal3f(-1.0f, 0.0f, 0.0f);
+						glVertex3f(-Wall_W / 2, Wall_H, Wall_W / 2);
+						glVertex3f(-Wall_W / 2, Wall_H, -Wall_W / 2);
+						glVertex3f(-Wall_W / 2, -Wall_H, -Wall_W / 2);
+						glVertex3f(-Wall_W / 2, -Wall_H, Wall_W / 2);
+
+						glNormal3f(0.0f, 0.0f, -1.0f);
+						glVertex3f(-Wall_W / 2, Wall_H, -Wall_W / 2);
+						glVertex3f(Wall_W / 2, Wall_H, -Wall_W / 2);
+						glVertex3f(Wall_W / 2, -Wall_H, -Wall_W / 2);
+						glVertex3f(-Wall_W / 2, -Wall_H, -Wall_W / 2);
+
+						glNormal3f(1.0f, 0.0f, 0.0f);
+						glVertex3f(Wall_W / 2, Wall_H, -Wall_W / 2);
+						glVertex3f(Wall_W / 2, Wall_H, Wall_W / 2);
+						glVertex3f(Wall_W / 2, -Wall_H, Wall_W / 2);
+						glVertex3f(Wall_W / 2, -Wall_H, -Wall_W / 2);
+					glEnd();
+
+					test2.unbind();
+					xtime += 0.01;
+					ytime += 0.02;
+					ztime += 0.03;
+				glPopMatrix();
+			}
 		}
 	}
 
@@ -466,8 +512,8 @@ void DrawCube(GLfloat x, GLfloat z)
 void DrawBullet()
 {
 	glPushMatrix();
-		inferno_shader.bind();
 	
+		inferno_shader.bind();
 		glUniform1f(glGetUniformLocation(inferno_shader.id(), "Scale"), -1.0);
 		glUniform1f(glGetUniformLocation(inferno_shader.id(), "Offset"), 0.0);
 		glUniform3f(glGetUniformLocation(inferno_shader.id(), "FireColor1"), 0.8, 0.1, 0);
