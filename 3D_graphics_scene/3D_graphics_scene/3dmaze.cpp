@@ -465,34 +465,30 @@ void DrawWall(GLfloat x, GLfloat z)
 
 		glTranslatef(x, 0, z);
 
-		//glBindTexture(GL_TEXTURE_2D, texName);
-		//glEnable(GL_TEXTURE_2D);
-
-		//glColor3f(0.8f, 0.0f, 0.0f);
 		glBegin(GL_QUADS);
 			glNormal3f(0.0f, 0.0f, 1.0f);
-			glTexCoord2f(10.0, 0.0); glVertex3f(width, Wall_H, width);
-			glTexCoord2f(0.0, 0.0); glVertex3f(-width, Wall_H, width);
-			glTexCoord2f(0.0, 10.0); glVertex3f(-width, -Wall_H, width);
-			glTexCoord2f(10.0, 10.0); glVertex3f(width, -Wall_H, width);
+			glVertex3f( width,  Wall_H,  width);
+			glVertex3f(-width,  Wall_H,  width);
+			glVertex3f(-width, -Wall_H,  width);
+			glVertex3f( width, -Wall_H,  width);
 
 			glNormal3f(-1.0f, 0.0f, 0.0f);
-			glTexCoord2f(10.0, 0.0); glVertex3f(-width, Wall_H, width);
-			glTexCoord2f(0.0, 0.0); glVertex3f(-width, Wall_H, -width);
-			glTexCoord2f(0.0, 10.0); glVertex3f(-width, -Wall_H, -width);
-			glTexCoord2f(10.0, 10.0); glVertex3f(-width, -Wall_H, width);
+			glVertex3f(-width,  Wall_H,  width);
+			glVertex3f(-width,  Wall_H, -width);
+			glVertex3f(-width, -Wall_H, -width);
+			glVertex3f(-width, -Wall_H,  width);
 
 			glNormal3f(0.0f, 0.0f, -1.0f);
-			glTexCoord2f(10.0, 0.0); glVertex3f(-width, Wall_H, -width);
-			glTexCoord2f(0.0, 0.0); glVertex3f(width, Wall_H, -width);
-			glTexCoord2f(0.0, 10.0); glVertex3f(width, -Wall_H, -width);
-			glTexCoord2f(10.0, 10.0); glVertex3f(-width, -Wall_H, -width);
+			glVertex3f(-width,  Wall_H, -width);
+			glVertex3f( width,  Wall_H, -width);
+			glVertex3f( width, -Wall_H, -width);
+			glVertex3f(-width, -Wall_H, -width);
 
 			glNormal3f(1.0f, 0.0f, 0.0f);
-			glTexCoord2f(10.0, 0.0); glVertex3f(width, Wall_H, -width);
-			glTexCoord2f(0.0, 0.0); glVertex3f(width, Wall_H, width);
-			glTexCoord2f(0.0, 10.0); glVertex3f(width, -Wall_H, width);
-			glTexCoord2f(10.0, 10.0); glVertex3f(width, -Wall_H, -width);
+			glVertex3f(width,  Wall_H, -width);
+			glVertex3f(width,  Wall_H,  width);
+			glVertex3f(width, -Wall_H,  width);
+			glVertex3f(width, -Wall_H, -width);
 		glEnd();
 		brick_shader.unbind();
 
