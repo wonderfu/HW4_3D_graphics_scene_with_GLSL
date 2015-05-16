@@ -7,6 +7,7 @@
 #include <GL/glut.h>
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 
 #define PI 3.14159265359
 #define PI_180 0.01745329251

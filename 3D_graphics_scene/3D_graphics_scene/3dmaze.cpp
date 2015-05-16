@@ -17,10 +17,10 @@ bool test_light = false;
 GLfloat light0_ambient[] = { 0.3, 0.3, 0.3, 1.0 };
 GLfloat light0_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat light0_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-GLfloat light0_position[] = { 0.0, 150.0, 0.0, 1.0 };
+GLfloat light0_position[] = { 0.0, 70.0, 0.0, 1.0 };
 
 /* Light1 */
-bool flash_light = true;
+bool flash_light = false;
 GLfloat light1_ambient[] = { 0.3, 0.3, 0.3, 1.0 };
 GLfloat light1_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat light1_specular[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -51,10 +51,14 @@ Shader brick_shader;
 Shader inferno_shader;
 Shader test1;
 Shader test2;
-float xtime = 0, ytime = 0, ztime = 0;
+Shader test3;
+float vtime2[3] = { 0 };
+float vtime3 = 0;
+float ver = 0.01;
 
 int main(int argc, char *argv[])
 {
+	srand(time(NULL));
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowPosition(200, 100);
@@ -170,6 +174,7 @@ void Init(void)
 	inferno_shader.init((char*)"./Shader Files/Inferno.vert", (char*)"./Shader Files/Inferno.frag");
 	test1.init((char*)"./Shader Files/test1.vert", (char*)"./Shader Files/test1.frag");
 	test2.init((char*)"./Shader Files/test2.vert", (char*)"./Shader Files/test2.frag");
+	test3.init((char*)"./Shader Files/test3.vert", (char*)"./Shader Files/test3.frag");
 }
 
 void Display(void)
@@ -195,7 +200,7 @@ void Display(void)
 	floor_half_h = map_h*Wall_W / 2;
 
 	glPushMatrix();
-		glColor3f(0.5f, 0.5f, 0.5f);
+		glColor3f(1.0f, 1.0f, 1.0f);
 		glBegin(GL_QUADS);
 			// ceil
 			glNormal3f(0.0f, -1.0f, 0.0f);
@@ -223,53 +228,93 @@ void Display(void)
 				DrawWall((map_half_h - i)*Wall_W, (map_half_w - j)*Wall_W);
 			if (map[i][j] == Map_End)
 				DrawCube((map_half_h - i)*Wall_W, (map_half_w - j)*Wall_W);
-			if (map[i][j] == Map_Start)
-			{
-				glPushMatrix();
-					
-					test2.bind();
-					glUniform1f(glGetUniformLocation(test2.id(), "xtime"), xtime);
-					glUniform1f(glGetUniformLocation(test2.id(), "ytime"), ytime);
-					glUniform1f(glGetUniformLocation(test2.id(), "ztime"), ztime);
-					glUniform1f(glGetUniformLocation(test2.id(), "size"), Wall_H);
-
-					glTranslatef((map_half_h - i)*Wall_W, 0, (map_half_w - j)*Wall_W);
-
-					glColor3f(0.0f, 0.0f, 1.0f);
-					glBegin(GL_QUADS);
-						glNormal3f(0.0f, 0.0f, 1.0f);
-						glVertex3f(Wall_W / 2, Wall_H, Wall_W / 2);
-						glVertex3f(-Wall_W / 2, Wall_H, Wall_W / 2);
-						glVertex3f(-Wall_W / 2, -Wall_H, Wall_W / 2);
-						glVertex3f(Wall_W / 2, -Wall_H, Wall_W / 2);
-
-						glNormal3f(-1.0f, 0.0f, 0.0f);
-						glVertex3f(-Wall_W / 2, Wall_H, Wall_W / 2);
-						glVertex3f(-Wall_W / 2, Wall_H, -Wall_W / 2);
-						glVertex3f(-Wall_W / 2, -Wall_H, -Wall_W / 2);
-						glVertex3f(-Wall_W / 2, -Wall_H, Wall_W / 2);
-
-						glNormal3f(0.0f, 0.0f, -1.0f);
-						glVertex3f(-Wall_W / 2, Wall_H, -Wall_W / 2);
-						glVertex3f(Wall_W / 2, Wall_H, -Wall_W / 2);
-						glVertex3f(Wall_W / 2, -Wall_H, -Wall_W / 2);
-						glVertex3f(-Wall_W / 2, -Wall_H, -Wall_W / 2);
-
-						glNormal3f(1.0f, 0.0f, 0.0f);
-						glVertex3f(Wall_W / 2, Wall_H, -Wall_W / 2);
-						glVertex3f(Wall_W / 2, Wall_H, Wall_W / 2);
-						glVertex3f(Wall_W / 2, -Wall_H, Wall_W / 2);
-						glVertex3f(Wall_W / 2, -Wall_H, -Wall_W / 2);
-					glEnd();
-
-					test2.unbind();
-					xtime += 0.01;
-					ytime += 0.02;
-					ztime += 0.03;
-				glPopMatrix();
-			}
 		}
 	}
+
+	glPushMatrix();
+
+		test2.bind();
+		glUniform3f(glGetUniformLocation(test2.id(), "vtime"), vtime2[0], vtime2[1], vtime2[2]);
+		glUniform1f(glGetUniformLocation(test2.id(), "size"), Wall_H);
+
+		glTranslatef((map_half_h - 4)*Wall_W, 0, (map_half_w - 7)*Wall_W);
+
+		glColor3f(1.0f, 0.0f, 1.0f);
+		glBegin(GL_QUADS);
+		glNormal3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(Wall_W / 2, Wall_H, Wall_W / 2);
+		glVertex3f(-Wall_W / 2, Wall_H, Wall_W / 2);
+		glVertex3f(-Wall_W / 2, -Wall_H, Wall_W / 2);
+		glVertex3f(Wall_W / 2, -Wall_H, Wall_W / 2);
+
+		glNormal3f(-1.0f, 0.0f, 0.0f);
+		glVertex3f(-Wall_W / 2, Wall_H, Wall_W / 2);
+		glVertex3f(-Wall_W / 2, Wall_H, -Wall_W / 2);
+		glVertex3f(-Wall_W / 2, -Wall_H, -Wall_W / 2);
+		glVertex3f(-Wall_W / 2, -Wall_H, Wall_W / 2);
+
+		glNormal3f(0.0f, 0.0f, -1.0f);
+		glVertex3f(-Wall_W / 2, Wall_H, -Wall_W / 2);
+		glVertex3f(Wall_W / 2, Wall_H, -Wall_W / 2);
+		glVertex3f(Wall_W / 2, -Wall_H, -Wall_W / 2);
+		glVertex3f(-Wall_W / 2, -Wall_H, -Wall_W / 2);
+
+		glNormal3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(Wall_W / 2, Wall_H, -Wall_W / 2);
+		glVertex3f(Wall_W / 2, Wall_H, Wall_W / 2);
+		glVertex3f(Wall_W / 2, -Wall_H, Wall_W / 2);
+		glVertex3f(Wall_W / 2, -Wall_H, -Wall_W / 2);
+		glEnd();
+
+		test2.unbind();
+		vtime2[0] += 0.01 + rand() % 7 / 1000.0;
+		vtime2[1] += 0.02 + rand() % 7 / 1000.0;
+		vtime2[2] += 0.03 + rand() % 7 / 1000.0;
+	glPopMatrix();
+
+	glPushMatrix();
+
+		test3.bind();
+		glUniform1f(glGetUniformLocation(test3.id(), "vtime"), vtime3);
+		glUniform1f(glGetUniformLocation(test3.id(), "size"), Wall_H);
+		glUniform3f(glGetUniformLocation(test3.id(), "color1"), 1.0, 1.0, 0.0);
+		glUniform3f(glGetUniformLocation(test3.id(), "color2"), 0.0, 1.0, 1.0);
+
+		glTranslatef((map_half_h - 6)*Wall_W, 0, (map_half_w - 7)*Wall_W);
+
+		glColor3f(1.0f, 0.0f, 1.0f);
+		glBegin(GL_QUADS);
+		glNormal3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(Wall_W / 2, Wall_H, Wall_W / 2);
+		glVertex3f(-Wall_W / 2, Wall_H, Wall_W / 2);
+		glVertex3f(-Wall_W / 2, -Wall_H, Wall_W / 2);
+		glVertex3f(Wall_W / 2, -Wall_H, Wall_W / 2);
+
+		glNormal3f(-1.0f, 0.0f, 0.0f);
+		glVertex3f(-Wall_W / 2, Wall_H, Wall_W / 2);
+		glVertex3f(-Wall_W / 2, Wall_H, -Wall_W / 2);
+		glVertex3f(-Wall_W / 2, -Wall_H, -Wall_W / 2);
+		glVertex3f(-Wall_W / 2, -Wall_H, Wall_W / 2);
+
+		glNormal3f(0.0f, 0.0f, -1.0f);
+		glVertex3f(-Wall_W / 2, Wall_H, -Wall_W / 2);
+		glVertex3f(Wall_W / 2, Wall_H, -Wall_W / 2);
+		glVertex3f(Wall_W / 2, -Wall_H, -Wall_W / 2);
+		glVertex3f(-Wall_W / 2, -Wall_H, -Wall_W / 2);
+
+		glNormal3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(Wall_W / 2, Wall_H, -Wall_W / 2);
+		glVertex3f(Wall_W / 2, Wall_H, Wall_W / 2);
+		glVertex3f(Wall_W / 2, -Wall_H, Wall_W / 2);
+		glVertex3f(Wall_W / 2, -Wall_H, -Wall_W / 2);
+		glEnd();
+
+		test3.unbind();
+		vtime3 += ver;
+		if (vtime3 > Wall_W || vtime3 < 0)
+			ver = -ver;
+
+	glPopMatrix();
 
 	if (bullet_dis > 0)
 	{
@@ -469,40 +514,40 @@ void DrawCube(GLfloat x, GLfloat z)
 	
 		glBegin(GL_QUADS);
 			glColor3f(0.0, 1.0, 0.0);	
-			glVertex3f( 0.7, 0.7, -0.7);
-			glVertex3f(-0.7, 0.7, -0.7);
-			glVertex3f(-0.7, 0.7,  0.7);
-			glVertex3f( 0.7, 0.7,  0.7);
+			glVertex3f( 1.0, 1.0, -1.0);
+			glVertex3f(-1.0, 1.0, -1.0);
+			glVertex3f(-1.0, 1.0,  1.0);
+			glVertex3f( 1.0, 1.0,  1.0);
 	
 			glColor3f(1.0, 0.0, 1.0);	
-			glVertex3f( 0.7, -0.7,  0.7);
-			glVertex3f(-0.7, -0.7,  0.7);
-			glVertex3f(-0.7, -0.7, -0.7);
-			glVertex3f( 0.7, -0.7, -0.7);
+			glVertex3f( 1.0, -1.0,  1.0);
+			glVertex3f(-1.0, -1.0,  1.0);
+			glVertex3f(-1.0, -1.0, -1.0);
+			glVertex3f( 1.0, -1.0, -1.0);
 	
 			glColor3f(0.0, 1.0, 1.0);	
-			glVertex3f( 0.7,  0.7, 0.7);
-			glVertex3f(-0.7,  0.7, 0.7);
-			glVertex3f(-0.7, -0.7, 0.7);
-			glVertex3f( 0.7, -0.7, 0.7);
+			glVertex3f( 1.0,  1.0, 1.0);
+			glVertex3f(-1.0,  1.0, 1.0);
+			glVertex3f(-1.0, -1.0, 1.0);
+			glVertex3f( 1.0, -1.0, 1.0);
 	
 			glColor3f(1.0, 0.0, 0.0);	
-			glVertex3f( 0.7, -0.7, -0.7);
-			glVertex3f(-0.7, -0.7, -0.7);
-			glVertex3f(-0.7,  0.7, -0.7);
-			glVertex3f( 0.7,  0.7, -0.7);
+			glVertex3f( 1.0, -1.0, -1.0);
+			glVertex3f(-1.0, -1.0, -1.0);
+			glVertex3f(-1.0,  1.0, -1.0);
+			glVertex3f( 1.0,  1.0, -1.0);
 	
 			glColor3f(1.0, 1.0, 0.0);	
-			glVertex3f(-0.7,  0.7,  0.7);
-			glVertex3f(-0.7,  0.7, -0.7);
-			glVertex3f(-0.7, -0.7, -0.7);
-			glVertex3f(-0.7, -0.7,  0.7);
+			glVertex3f(-1.0,  1.0,  1.0);
+			glVertex3f(-1.0,  1.0, -1.0);
+			glVertex3f(-1.0, -1.0, -1.0);
+			glVertex3f(-1.0, -1.0,  1.0);
 	
 			glColor3f(0.0, 0.0, 1.0);	
-			glVertex3f(0.7,  0.7, -0.7);
-			glVertex3f(0.7,  0.7,  0.7);
-			glVertex3f(0.7, -0.7,  0.7);
-			glVertex3f(0.7, -0.7, -0.7);
+			glVertex3f(1.0,  1.0, -1.0);
+			glVertex3f(1.0,  1.0,  1.0);
+			glVertex3f(1.0, -1.0,  1.0);
+			glVertex3f(1.0, -1.0, -1.0);
 		glEnd();
 
 		test1.unbind();

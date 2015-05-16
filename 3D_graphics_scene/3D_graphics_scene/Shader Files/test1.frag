@@ -12,5 +12,5 @@ void main (void)
 	if( dis.z > 0.4 && dis.z < 0.6)
 		discard;
 
-	gl_FragColor = vec4 ( Position+vec3(0.4) , 1.0);
+	gl_FragColor = vec4 ( Position+vec3(0.5) , 1.0);
 }
