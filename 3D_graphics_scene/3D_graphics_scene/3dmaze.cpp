@@ -46,14 +46,18 @@ int map_w, map_h;
 
 GLfloat turn = 0.0;
 
+GLUquadricObj *quadratic = gluNewQuadric();
+
 /* Shader */
 Shader brick_shader;
 Shader inferno_shader;
 Shader test1;
 Shader test2;
 Shader test3;
+Shader test4;
 float vtime2[3] = { 0 };
 float vtime3 = 0;
+float vtime4 = 0;
 float ver = 0.01;
 
 int main(int argc, char *argv[])
@@ -175,6 +179,7 @@ void Init(void)
 	test1.init((char*)"./Shader Files/test1.vert", (char*)"./Shader Files/test1.frag");
 	test2.init((char*)"./Shader Files/test2.vert", (char*)"./Shader Files/test2.frag");
 	test3.init((char*)"./Shader Files/test3.vert", (char*)"./Shader Files/test3.frag");
+	test4.init((char*)"./Shader Files/test4.vert", (char*)"./Shader Files/test4.frag");
 }
 
 void Display(void)
@@ -315,6 +320,25 @@ void Display(void)
 			ver = -ver;
 
 	glPopMatrix();
+
+	glPushMatrix();
+
+		test4.bind();
+		glUniform1f(glGetUniformLocation(test4.id(), "vtime"), vtime4);
+		glUniform3f(glGetUniformLocation(test4.id(), "lcolor"), 0.0, 1.0, 0.0);
+
+		glTranslatef((map_half_h - 8)*Wall_W, -Wall_H, (map_half_w - 7)*Wall_W);
+		glRotatef(90, -1.0, 0.0, 0.0);
+		glColor3f(0.0, 1.0, 0.0);
+		gluCylinder(quadratic, 7.0, 7.0, Wall_H*2, 50, 50);
+		test4.unbind();
+
+		vtime4 += 0.01;
+		if (vtime4 > Wall_H * 2)
+			vtime4 = 0;
+
+	glPopMatrix();
+
 
 	if (bullet_dis > 0)
 	{
@@ -566,7 +590,7 @@ void DrawBullet()
 		glEnable(GL_TEXTURE_3D);
 	
 		glTranslatef(bullet_pos[0], bullet_pos[1], bullet_pos[2]);
-		glutSolidSphere(radious, 20, 20);
+		glutSolidSphere(radious, 50, 50);
 	
 		inferno_shader.unbind();
 	glPopMatrix();
