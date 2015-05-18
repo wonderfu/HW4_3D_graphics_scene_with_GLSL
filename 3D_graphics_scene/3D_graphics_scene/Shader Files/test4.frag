@@ -1,22 +1,27 @@
 
 varying vec4 Position;
 
-uniform float vtime;
-uniform vec3 lcolor;
+uniform float cy_r;
+uniform float dig_r;
+uniform vec3 color1;
+uniform vec3 color2;
+uniform vec3 point[20];
 
 void main (void)
 {
-	vec3 dis = fract(vec3(Position));
 	vec4 color;
-	float zperc = dis.z - fract(vtime);
-	if ( zperc < 0.0 )
-		zperc = zperc + 1.0;
 
-	zperc = zperc * 2.0;
-	if ( zperc > 1.0 )
-		zperc = 2.0 - zperc;
-
-	color = mix(vec4(lcolor, 1.0) , vec4(0.0, 0.0, 1.0, 0.0), zperc);
+	color = vec4(-1.0);
+	for(int i = 0; i < 20; ++i)
+	{
+		float dis = distance(vec3(Position), point[i] ) - dig_r + cy_r;
+		if( dis < 0.01 )
+		{
+			color = vec4(mix(color1, color2, dis*100.0), mix(1.0, 0.0, dis*150.0));
+		}
+	}
+	if( color.a < 0.0 )
+		discard;
 
 	gl_FragColor = color;
 }

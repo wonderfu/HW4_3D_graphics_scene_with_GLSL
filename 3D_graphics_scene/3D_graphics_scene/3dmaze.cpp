@@ -57,9 +57,10 @@ Shader test3;
 Shader test4;
 float vtime2[3] = { 0 };
 float vtime3 = 0;
-float vtime4 = 0;
-float ver = 0.01;
-float circlebig=5;
+float ver = 0.02;
+float digcenter[Point_Size] = { 0 };
+float circlebig = 10.0;
+float circlever = 0.1;
 
 int main(int argc, char *argv[])
 {
@@ -132,6 +133,7 @@ void Init(void)
 	/* light */
 	glEnable(GL_LIGHTING);
 	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
@@ -181,6 +183,15 @@ void Init(void)
 	test2.init((char*)"./Shader Files/test2.vert", (char*)"./Shader Files/test2.frag");
 	test3.init((char*)"./Shader Files/test3.vert", (char*)"./Shader Files/test3.frag");
 	test4.init((char*)"./Shader Files/test4.vert", (char*)"./Shader Files/test4.frag");
+
+	for (int i = 0; i < Point_Size; i += 3)
+	{
+		float randx = rand() % 10000 / 10.0;
+
+		digcenter[i] = randx * (rand() % 2 == 0 ? 1 : -1);
+		digcenter[i + 1] = sqrt(1000000 - randx*randx) * (rand() % 2 == 0 ? 1 : -1);
+		digcenter[i + 2] = (rand() % ((int)Wall_H*3)) - Wall_H*0.5;
+	}
 }
 
 void Display(void)
@@ -188,10 +199,6 @@ void Display(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	circlebig++;
-	if (circlebig > 19)
-		circlebig = 0;
 
 	/* Camera */
 	camera_center[0] = camera_eye[0] + camera_ray[0];
@@ -240,6 +247,10 @@ void Display(void)
 				DrawCube((map_half_h - i)*Wall_W, (map_half_w - j)*Wall_W);
 		}
 	}
+
+	circlebig += circlever;
+	if (circlebig > 19 || circlebig < 10)
+		circlever = -circlever;
 
 	glPushMatrix();
 
@@ -329,21 +340,31 @@ void Display(void)
 	glPushMatrix();
 
 		test4.bind();
-		glUniform1f(glGetUniformLocation(test4.id(), "vtime"), vtime4);
-		glUniform3f(glGetUniformLocation(test4.id(), "lcolor"), 0.0, 1.0, 0.0);
+		glUniform1f(glGetUniformLocation(test4.id(), "cy_r"), 7.0);
+		glUniform1f(glGetUniformLocation(test4.id(), "dig_r"), 1000.0);
+		glUniform3f(glGetUniformLocation(test4.id(), "color1"), 1.0, 1.0, 1.0);
+		glUniform3f(glGetUniformLocation(test4.id(), "color2"), 1.0, 1.0, 0.0);
+		glUniform3fv(glGetUniformLocation(test4.id(), "point"), 20, digcenter);
 
 		glTranslatef((map_half_h - 8)*Wall_W, -Wall_H, (map_half_w - 7)*Wall_W);
 		glRotatef(90, -1.0, 0.0, 0.0);
-		glColor3f(0.0, 1.0, 0.0);
-		gluCylinder(quadratic, 7.0, 7.0, Wall_H*2, 50, 50);
+		gluCylinder(quadratic, 7.0, 7.0, Wall_H*2, 500, 500);
 		test4.unbind();
-
-		vtime4 += 0.01;
-		if (vtime4 > Wall_H * 2)
-			vtime4 = 0;
 
 	glPopMatrix();
 
+	for (int i = 0; i < Point_Size; i += 3)
+	{
+		digcenter[i + 2] += 0.04;
+		if (digcenter[i + 2] > Wall_H*2.5)
+		{
+			float randx = rand() % 10000 / 10.0;
+
+			digcenter[i] = randx * (rand() % 2 == 0 ? 1 : -1);
+			digcenter[i + 1] = sqrt(1000000 - randx*randx) * (rand() % 2 == 0 ? 1 : -1);
+			digcenter[i + 2] = -0.5*Wall_H;
+		}
+	}
 
 	if (bullet_dis > 0)
 	{

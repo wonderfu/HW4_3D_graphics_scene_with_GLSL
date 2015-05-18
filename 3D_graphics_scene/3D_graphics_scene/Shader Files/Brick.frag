@@ -31,7 +31,7 @@ void main(void)
     vec3  color;
     vec2  position, useBrick;
 
-	if ( distance(BrickCircle,CIRposition) > 19.0-CIRBig)
+	if ( distance(BrickCircle,CIRposition) > CIRBig)
 	{
 		discard;
 	}

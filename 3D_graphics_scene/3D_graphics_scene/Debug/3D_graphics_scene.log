@@ -1,17 +1,15 @@
-﻿已經開始建置於 2015/5/18 下午 12:10:40。
-     1>節點 2 (Build 目標) 上的專案 "C:\Users\dogen\Desktop\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\3D_graphics_scene\3D_graphics_scene.vcxproj"。
+﻿Build started 2015/5/18 下午 10:07:52.
+     1>Project "C:\Users\粲富\Documents\GitHub\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\3D_graphics_scene\3D_graphics_scene.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt 3dmaze.cpp
          3dmaze.cpp
-     1>c:\program files (x86)\microsoft visual studio 12.0\vc\include\gl\glaux.h(17): warning C4068: 未知的 pragma
-     1>c:\program files (x86)\microsoft visual studio 12.0\vc\include\gl\glaux.h(374): warning C4068: 未知的 pragma
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\dogen\Desktop\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\Debug\3D_graphics_scene.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib glut32.lib glew32.lib glaux.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\dogen\Desktop\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\Debug\3D_graphics_scene.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\dogen\Desktop\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\Debug\3D_graphics_scene.lib" /MACHINE:X86 Debug\3dmaze.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\粲富\Documents\GitHub\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\Debug\3D_graphics_scene.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib glut32.lib glew32.lib glaux.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\粲富\Documents\GitHub\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\Debug\3D_graphics_scene.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\粲富\Documents\GitHub\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\Debug\3D_graphics_scene.lib" /MACHINE:X86 Debug\3dmaze.obj
          Debug\shader.obj
          Debug\noise.obj
-         3D_graphics_scene.vcxproj -> C:\Users\dogen\Desktop\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\Debug\3D_graphics_scene.exe
-     1>專案 "C:\Users\dogen\Desktop\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\3D_graphics_scene\3D_graphics_scene.vcxproj" (Build 目標) 建置完成。
+         3D_graphics_scene.vcxproj -> C:\Users\粲富\Documents\GitHub\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\Debug\3D_graphics_scene.exe
+     1>Done Building Project "C:\Users\粲富\Documents\GitHub\HW4_3D_graphics_scene_with_GLSL\3D_graphics_scene\3D_graphics_scene\3D_graphics_scene.vcxproj" (Build target(s)).
 
-建置成功。
+Build succeeded.
 
-經過時間 00:00:01.87
+Time Elapsed 00:00:00.84
