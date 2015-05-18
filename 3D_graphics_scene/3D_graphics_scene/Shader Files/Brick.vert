@@ -11,11 +11,13 @@
 
 uniform vec3 LightPosition;
 
+
 const float SpecularContribution = 0.3;
 const float DiffuseContribution  = 1.0 - SpecularContribution;
 
 varying float LightIntensity;
 varying vec2  MCposition;
+varying vec3  CIRposition; 
 
 void main(void)
 {
@@ -37,5 +39,6 @@ void main(void)
                       SpecularContribution * spec;
 
     MCposition      = gl_Vertex.xy;
-    gl_Position     = ftransform();
+	CIRposition     = gl_Vertex.xyz;
+	gl_Position     = ftransform();
 }

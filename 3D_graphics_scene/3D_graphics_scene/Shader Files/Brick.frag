@@ -12,9 +12,14 @@
 uniform vec3  BrickColor, MortarColor;
 uniform vec2  BrickSize;
 uniform vec2  BrickPct;
+uniform vec3  BrickCircle; 
+uniform float CIRBig;
 
 varying vec2  MCposition;
 varying float LightIntensity;
+varying vec3  CIRposition;
+
+
 
 float rand(vec2 co)
 {
@@ -25,6 +30,12 @@ void main(void)
 {
     vec3  color;
     vec2  position, useBrick;
+
+	if ( distance(BrickCircle,CIRposition) > 19.0-CIRBig)
+	{
+		discard;
+	}
+
     
     position = MCposition / BrickSize;
 
@@ -38,5 +49,6 @@ void main(void)
     color  = mix(MortarColor, BrickColor, useBrick.x * useBrick.y);
     color *= LightIntensity;
     gl_FragColor = vec4 (color, 1.0);
+
 
 }
