@@ -59,6 +59,7 @@ float vtime2[3] = { 0 };
 float vtime3 = 0;
 float vtime4 = 0;
 float ver = 0.01;
+float circlebig=5;
 
 int main(int argc, char *argv[])
 {
@@ -187,6 +188,10 @@ void Display(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	circlebig++;
+	if (circlebig > 19)
+		circlebig = 0;
 
 	/* Camera */
 	camera_center[0] = camera_eye[0] + camera_ray[0];
@@ -486,6 +491,8 @@ void DrawWall(GLfloat x, GLfloat z)
 		glUniform3f(glGetUniformLocation(brick_shader.id(), "MortarColor"), 0.6, 0.4, 0.2);
 		glUniform2f(glGetUniformLocation(brick_shader.id(), "BrickSize"), 5, 2);
 		glUniform2f(glGetUniformLocation(brick_shader.id(), "BrickPct"), 0.85, 0.85);
+		glUniform3f(glGetUniformLocation(brick_shader.id(), "BrickCircle"), 0.0, 0.0,0.0);
+		glUniform1f(glGetUniformLocation(brick_shader.id(), "CIRBig"),circlebig); 
 
 		glTranslatef(x, 0, z);
 
