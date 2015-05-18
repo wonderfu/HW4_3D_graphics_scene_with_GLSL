@@ -14,5 +14,5 @@ uniform float Scale;
 void main(void)
 {
 	Position = vec3(gl_Vertex) * Scale;
-	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+	gl_Position = gl_ModelViewProjectionMatrix * vec4(Position,1.0);
 }

@@ -16,7 +16,7 @@ void main (void)
 	if ( zperc > 1.0 )
 		zperc = 2.0 - zperc;
 
-	color = mix(vec4(lcolor, 1.0) , vec4(lcolor, 0.0), zperc);
+	color = mix(vec4(lcolor, 1.0) , vec4(0.0, 0.0, 1.0, 0.0), zperc);
 
 	gl_FragColor = color;
 }
